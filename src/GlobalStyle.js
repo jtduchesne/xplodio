@@ -14,6 +14,24 @@ const GlobalStyle = createGlobalStyle`
     --darkgray: #2F3136;
     --shadow: #24272B;
     --black: #111111;
+
+    --max-width: 100%;
+  }
+
+  @media screen and (min-width: 540px) {
+    :root { --max-width: 540px; }
+  }
+  @media screen and (min-width: 768px) {
+    :root { --max-width: 720px; }
+  }
+  @media screen and (min-width: 992px) {
+    :root { --max-width: 960px; }
+  }
+  @media screen and (min-width: 1200px) {
+    :root { --max-width: 1140px; }
+  }
+  @media screen and (min-width: 1400px) {
+    :root { --max-width: 1320px; }
   }
 
   ${normalize}
@@ -33,6 +51,12 @@ const GlobalStyle = createGlobalStyle`
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 
