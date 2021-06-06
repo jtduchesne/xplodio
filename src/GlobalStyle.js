@@ -59,6 +59,14 @@ const GlobalStyle = createGlobalStyle`
     margin-left: auto;
     margin-right: auto;
   }
+  .row {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  .column {
+    display: flex;
+    flex-flow: column nowrap;
+  }
 `;
 
 export default GlobalStyle;

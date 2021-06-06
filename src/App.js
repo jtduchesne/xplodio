@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 import Header from "./components/Header";
+import Player from "./components/Player";
 
 const App = () => {
   return (
     <>
       <Header />
       <Main className="container">
-        Xplodio
+        <Player artworkPath="images/artwork500x500.jpg" />
       </Main>
     </>
   );
