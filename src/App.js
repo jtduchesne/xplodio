@@ -3,13 +3,15 @@ import styled from "styled-components";
 
 import Header from "./components/Header";
 import Player from "./components/Player";
+import Tracks from "./components/Tracks";
 
 const App = () => {
   return (
     <>
       <Header />
-      <Main className="container">
+      <Main className="container column">
         <Player artworkPath="images/artwork500x500.jpg" />
+        <Tracks />
       </Main>
     </>
   );
