@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
     --black: #111111;
 
     --max-width: 100%;
+    --header-height: 40px;
   }
 
   @media screen and (min-width: 540px) {

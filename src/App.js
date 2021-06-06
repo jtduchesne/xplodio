@@ -1,16 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
+import Header from "./components/Header";
+
 const App = () => {
   return (
-    <Wrapper className="container">
-      Xplodio
-    </Wrapper>
+    <>
+      <Header />
+      <Main className="container">
+        Xplodio
+      </Main>
+    </>
   );
 };
 
-const Wrapper = styled.main`
-  height: 100vh;
+const Main = styled.main`
+  height: calc(100vh - var(--header-height));
   box-shadow: 0 0 50px var(--taupe);
 `;
 
