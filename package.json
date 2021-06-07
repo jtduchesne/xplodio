@@ -1,6 +1,11 @@
 {
   "name": "xplodio",
   "version": "0.2.0",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jtduchesne/xplodio.git"
+  },
+  "author": "Jean-Thomas Duchesne",
   "private": true,
   "dependencies": {
     "react": "^17.0.2",
