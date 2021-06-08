@@ -22,4 +22,12 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+function hideProvider(doc, ret, options) {
+  delete ret.provider;
+  delete ret.uid;
+  return ret;
+}
+userSchema.set('toJSON', {transform: hideProvider});
+userSchema.set('toObject', {transform: hideProvider});
+
 module.exports = mongoose.model('User', userSchema);

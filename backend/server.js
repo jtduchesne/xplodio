@@ -1,15 +1,23 @@
 "use strict";
 
-const { connectDb, disconnectDb } = require("./database");
-
 const express = require("express");
 const app = express();
 
 app.use(express.json());
 
+//-------------------------------------------------------------------//
+
+const { UsersController } = require("./controllers");
+
+app.use(new UsersController);
+
 app.use((req, res) => {
   res.status(404).end();
 });
+
+//-------------------------------------------------------------------//
+
+const { connectDb, disconnectDb } = require("./database");
 
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
