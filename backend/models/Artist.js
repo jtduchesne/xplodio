@@ -17,4 +17,14 @@ const artistSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+artistSchema.pre('remove', async function(next) {
+  try {
+    for await (let song of this.model('Song').find({ artist: this._id }))
+      song.remove();
+    next();
+  } catch(err) {
+    next(err);
+  }
+});
+
 module.exports = mongoose.model('Artist', artistSchema);
