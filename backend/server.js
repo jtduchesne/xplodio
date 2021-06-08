@@ -7,9 +7,13 @@ app.use(express.json());
 
 //-------------------------------------------------------------------//
 
-const { UsersController } = require("./controllers");
+const {
+  UsersController,
+  ArtistsController,
+} = require("./controllers");
 
 app.use(new UsersController);
+app.use(new ArtistsController);
 
 app.use((req, res) => {
   res.status(404).end();

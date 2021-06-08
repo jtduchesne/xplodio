@@ -1,3 +1,4 @@
 module.exports = {
-  UsersController: require("./UsersController")
+  UsersController: require("./UsersController"),
+  ArtistsController: require("./ArtistsController"),
 };

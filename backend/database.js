@@ -9,6 +9,7 @@ const uri = `mongodb+srv://${credentials}@cluster0.m9of0.mongodb.net/${db}?retry
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 };
 
 mongoose.connection.on('connected', () => {
