@@ -3,6 +3,10 @@
 # credentials
 **/.env
 
+# Uploads (keep only the folder)
+/backend/files/*
+!/backend/files/.gitkeep
+
 # dependencies
 **/node_modules
 /.pnp
