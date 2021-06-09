@@ -11,11 +11,13 @@ const {
   UsersController,
   ArtistsController,
   SongsController,
+  TracksController,
 } = require("./controllers");
 
 app.use(new UsersController);
 app.use(new ArtistsController({with: SongsController}));
-app.use(new SongsController);
+app.use(new SongsController({with: TracksController}));
+app.use(new TracksController);
 
 app.use((req, res) => {
   res.status(404).end();

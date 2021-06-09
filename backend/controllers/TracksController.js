@@ -1,27 +1,23 @@
 const { Router } = require("express");
 
-const Song = require("../models/Song");
+const Track = require("../models/Track");
 
-class SongsController {
+class TracksController {
   constructor(opts) {
     let router = Router(opts);
 
-    router.param('slug', this.setSong);
+    router.param('id', this.setTrack);
 
-    router.route("/songs")
+    router.route("/tracks")
       .get(this.index)
       .post(this.create)
       .all((req, res) => res.set('Allow', "GET,POST").sendStatus(405));
-    router.route("/song/:slug")
+    router.route("/track/:id")
       .get(this.show)
       .put(this.update)
       .patch(this.update)
       .delete(this.destroy)
       .all((req, res) => res.set('Allow', "GET,PUT,PATCH,DELETE").sendStatus(405));
-
-    if (opts && opts['with']) {
-      router.use("/song/:slug", new opts['with']);
-    }
 
     return router;
   }
@@ -29,11 +25,11 @@ class SongsController {
   // --------------------------------------------------------------- //
 
   index(req, res) {
-    Song.find(req.artist ? { artist: req.artist } : {}).exec((err, songs) => {
+    Track.find({}, (err, tracks) => {
       if (err) console.log(err);
       res.status(200).send({
         status: 200,
-        data: songs
+        data: tracks
       });
     });
   }
@@ -41,19 +37,18 @@ class SongsController {
   show(req, res) {
     res.status(200).send({
       status: 200,
-      data: req.song
+      data: req.track
     });
   }
 
   create(req, res) {
-    new Song({
-      artist: req.artist._id,
+    new Track({
       ...req.body,
-    }).save(req.body, (err, song) => {
-      if (song) {
+    }).save((err, track) => {
+      if (track) {
         res.status(201).send({
           status: 201,
-          data: song
+          data: track
         });
       } else if (err) {
         res.status(422).send({
@@ -65,11 +60,13 @@ class SongsController {
   }
 
   update(req, res) {
-    req.song.set(req.body).save((err, song) => {
-      if (song) {
+    req.track['name'] = req.body['name'];
+
+    req.track.save((err, track) => {
+      if (track) {
         res.status(200).send({
           status: 200,
-          data: song
+          data: track
         });
       } else if (err) {
         res.status(422).send({
@@ -81,8 +78,8 @@ class SongsController {
   }
 
   destroy(req, res) {
-    req.song.remove((err, song) => {
-      if (song) {
+    req.track.remove((err, track) => {
+      if (track) {
         res.status(204).end();
       } else if (err) {
         res.status(400).send({
@@ -95,16 +92,16 @@ class SongsController {
 
   // --------------------------------------------------------------- //
 
-  setSong(req, res, next, slug) {
-    Song.findOne({ slug }).exec((err, song) => {
+  setTrack(req, res, next, id) {
+    Track.findById(id).exec((err, track) => {
       if (err) console.log(err);
-      if (song) {
-        req.song = song;
+      if (track) {
+        req.track = track;
         next();
       } else {
         res.status(404).send({
           status: 404,
-          data: { slug },
+          data: {_id: id},
           message: "Not Found"
         });
       }
@@ -112,4 +109,4 @@ class SongsController {
   }
 }
 
-module.exports = SongsController;
+module.exports = TracksController;
