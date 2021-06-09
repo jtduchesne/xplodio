@@ -23,8 +23,21 @@ const songSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    tracks: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Track',
+    }],
   },
   { timestamps: true }
 );
+
+songSchema.pre('remove', function(next) {
+  try {
+    this.tracks.forEach((track) => track.remove());
+    next();
+  } catch(err) {
+    next(err);
+  }
+});
 
 module.exports = mongoose.model('Song', songSchema);
