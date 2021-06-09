@@ -10,10 +10,12 @@ app.use(express.json());
 const {
   UsersController,
   ArtistsController,
+  SongsController,
 } = require("./controllers");
 
 app.use(new UsersController);
-app.use(new ArtistsController);
+app.use(new ArtistsController({with: SongsController}));
+app.use(new SongsController);
 
 app.use((req, res) => {
   res.status(404).end();

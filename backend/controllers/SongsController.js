@@ -1,27 +1,23 @@
 const { Router } = require("express");
 
-const Artist = require("../models/Artist");
+const Song = require("../models/Song");
 
-class ArtistsController {
+class SongsController {
   constructor(opts) {
     let router = Router(opts);
 
-    router.param('slug', this.setArtist);
+    router.param('slug', this.setSong);
 
-    router.route("/artists")
+    router.route("/songs")
       .get(this.index)
       .post(this.create)
       .all((req, res) => res.set('Allow', "GET,POST").sendStatus(405));
-    router.route("/artist/:slug")
+    router.route("/song/:slug")
       .get(this.show)
       .put(this.update)
       .patch(this.update)
       .delete(this.destroy)
       .all((req, res) => res.set('Allow', "GET,PUT,PATCH,DELETE").sendStatus(405));
-
-    if (opts && opts['with']) {
-      router.use("/artist/:slug", new opts['with']);
-    }
 
     return router;
   }
@@ -29,11 +25,11 @@ class ArtistsController {
   // --------------------------------------------------------------- //
 
   index(req, res) {
-    Artist.find({}).exec((err, artists) => {
+    Song.find(req.artist ? { artist: req.artist } : {}).exec((err, songs) => {
       if (err) console.log(err);
       res.status(200).send({
         status: 200,
-        data: artists
+        data: songs
       });
     });
   }
@@ -41,18 +37,19 @@ class ArtistsController {
   show(req, res) {
     res.status(200).send({
       status: 200,
-      data: req.artist
+      data: req.song
     });
   }
 
   create(req, res) {
-    new Artist({
+    new Song({
+      artist: req.artist._id,
       ...req.body,
-    }).save((err, artist) => {
-      if (artist) {
+    }).save(req.body, (err, song) => {
+      if (song) {
         res.status(201).send({
           status: 201,
-          data: artist
+          data: song
         });
       } else if (err) {
         res.status(422).send({
@@ -64,11 +61,11 @@ class ArtistsController {
   }
 
   update(req, res) {
-    req.artist.set(req.body).save((err, artist) => {
-      if (artist) {
+    req.song.set(req.body).save((err, song) => {
+      if (song) {
         res.status(200).send({
           status: 200,
-          data: artist
+          data: song
         });
       } else if (err) {
         res.status(422).send({
@@ -80,8 +77,8 @@ class ArtistsController {
   }
 
   destroy(req, res) {
-    req.artist.remove((err, artist) => {
-      if (artist) {
+    req.song.remove((err, song) => {
+      if (song) {
         res.status(204).end();
       } else if (err) {
         res.status(400).send({
@@ -94,11 +91,11 @@ class ArtistsController {
 
   // --------------------------------------------------------------- //
 
-  setArtist(req, res, next, slug) {
-    Artist.findOne({ slug }).exec((err, artist) => {
+  setSong(req, res, next, slug) {
+    Song.findOne({ slug }).exec((err, song) => {
       if (err) console.log(err);
-      if (artist) {
-        req.artist = artist;
+      if (song) {
+        req.song = song;
         next();
       } else {
         res.status(404).send({
@@ -111,4 +108,4 @@ class ArtistsController {
   }
 }
 
-module.exports = ArtistsController;
+module.exports = SongsController;
