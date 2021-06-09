@@ -3,6 +3,7 @@
 const express = require("express");
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const path = require('path');
@@ -21,6 +22,16 @@ app.use(new UsersController);
 app.use(new ArtistsController({with: SongsController}));
 app.use(new SongsController({with: TracksController}));
 app.use(new TracksController);
+
+// app.route('/').get((req, res) => {
+//   res.writeHead(200, {'Content-Type': 'text/html'});
+//   res.write('<form action="tracks" method="post" enctype="multipart/form-data">');
+//   res.write('<input type="text" name="name"><br>');
+//   res.write('<input type="file" name="fileToUpload"><br>');
+//   res.write('<input type="submit">');
+//   res.write('</form>');
+//   return res.end();
+// });
 
 app.use((req, res) => {
   res.status(404).end();

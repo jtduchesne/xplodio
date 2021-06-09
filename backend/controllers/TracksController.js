@@ -1,4 +1,7 @@
 const { Router } = require("express");
+const Busboy = require("busboy");
+const fs = require('fs');
+const path = require('path');
 
 const Track = require("../models/Track");
 
@@ -42,21 +45,49 @@ class TracksController {
   }
 
   create(req, res) {
-    new Track({
+    let newTrack = new Track({
       ...req.body,
-    }).save((err, track) => {
-      if (track) {
-        res.status(201).send({
-          status: 201,
-          data: track
-        });
-      } else if (err) {
-        res.status(422).send({
-          status: 422, errors: err.errors
-        });
-      } else
-        res.sendStatus(400);
     });
+
+    let busboy = new Busboy({ headers: req.headers });
+
+    busboy.on('field', (fieldname, value) => {
+      newTrack[fieldname] = value;
+    });
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+      let ext = path.extname(filename);
+      let basename = path.basename(filename, ext);
+
+      let filepath = path.join(
+        "files",
+        `${basename}-${Date.now()}${ext}`
+      );
+
+      newTrack['url'] = filepath;
+      newTrack['contentType'] = mimetype;
+      newTrack['filePath'] = path.resolve(filepath);
+      file.on('data', (data) => {
+        newTrack['fileSize'] = data.length;
+      });
+
+      file.pipe(fs.createWriteStream(newTrack['filePath']));
+    });
+    busboy.on('finish', () => {
+      newTrack.save((err, track) => {
+        if (track) {
+          res.status(201).set('Connection', 'close').send({
+            status: 201,
+            data: track
+          });
+        } else if (err) {
+          res.status(422).send({
+            status: 422, errors: err.errors
+          });
+        } else
+          res.sendStatus(400);
+      });
+    });
+    req.pipe(busboy);
   }
 
   update(req, res) {
