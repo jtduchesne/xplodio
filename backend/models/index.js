@@ -3,4 +3,5 @@ module.exports = {
   Artist: require("./Artist"),
   Song: require("./Song"),
   Track: require("./Track"),
+  Image: require("./Image"),
 };

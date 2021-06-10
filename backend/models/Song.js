@@ -17,6 +17,10 @@ const songSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    artwork: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Image',
+    },
     artist: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Artist',
@@ -33,6 +37,8 @@ const songSchema = new mongoose.Schema(
 
 songSchema.pre('remove', function(next) {
   try {
+    if (this.artwork)
+      this.artwork.remove();
     this.tracks.forEach((track) => track.remove());
     next();
   } catch(err) {

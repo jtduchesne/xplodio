@@ -13,12 +13,18 @@ const artistSchema = new mongoose.Schema(
       index: true,
       unique: true,
     },
+    avatar: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Image',
+    },
   },
   { timestamps: true }
 );
 
 artistSchema.pre('remove', async function(next) {
   try {
+    if (this.avatar)
+      this.avatar.remove();
     for await (let song of this.model('Song').find({ artist: this._id }))
       song.remove();
     next();
