@@ -16,12 +16,14 @@ const {
   ArtistsController,
   SongsController,
   TracksController,
+  ImagesController,
 } = require("./controllers");
 
 app.use(new UsersController);
 app.use(new ArtistsController({with: SongsController}));
 app.use(new SongsController({with: TracksController}));
 app.use(new TracksController);
+app.use(new ImagesController);
 
 // app.route('/').get((req, res) => {
 //   res.writeHead(200, {'Content-Type': 'text/html'});
