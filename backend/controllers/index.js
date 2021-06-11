@@ -4,4 +4,5 @@ module.exports = {
   SongsController: require("./SongsController"),
   TracksController: require("./TracksController"),
   ImagesController: require("./ImagesController"),
+  UploadsController: require("./UploadsController"),
 };

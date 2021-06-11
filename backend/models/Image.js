@@ -3,30 +3,30 @@ const fs = require('fs');
 
 const imageSchema = new mongoose.Schema(
   {
-    url: {
+    externalUrl: {
       type: String,
-      required: true,
+      required: false,
     },
-    filePath: {
-      type: String,
-    },
-    fileSize: {
-      type: Number,
+    upload: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Upload',
+      required: false,
     },
   },
   { timestamps: true }
 );
+imageSchema.virtual('url').get(function() {
+  return this.upload ? this.upload.url : this.externalUrl;
+});
 
-function hideFilePath(doc, ret, options) {
-  delete ret.filePath;
-  return ret;
-}
-imageSchema.set('toJSON', {transform: hideFilePath});
-imageSchema.set('toObject', {transform: hideFilePath});
-
-imageSchema.pre('remove', function(next) {
-  if (this.filePath) fs.unlink(this.filePath);
-  next();
+imageSchema.pre('find', function() {
+  this.populate('upload', 'url -_id');
+});
+imageSchema.pre('findOne', function() {
+  this.populate('upload', 'url -_id');
+});
+imageSchema.post('save', function(image, next) {
+  image.populate('upload', 'url -_id').execPopulate().then(() => next());
 });
 
 module.exports = mongoose.model('Image', imageSchema);

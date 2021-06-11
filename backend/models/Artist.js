@@ -21,10 +21,18 @@ const artistSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+artistSchema.pre('find', function() {
+  this.populate('avatar', 'url -_id');
+});
+artistSchema.pre('findOne', function() {
+  this.populate('avatar', 'url -_id');
+});
+artistSchema.post('save', function(artist, next) {
+  artist.populate('avatar', 'url -_id').execPopulate().then(() => next());
+});
+
 artistSchema.pre('remove', async function(next) {
   try {
-    if (this.avatar)
-      this.avatar.remove();
     for await (let song of this.model('Song').find({ artist: this._id }))
       song.remove();
     next();

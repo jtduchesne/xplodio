@@ -1,7 +1,4 @@
 const { Router } = require("express");
-const Busboy = require("busboy");
-const fs = require('fs');
-const path = require('path');
 
 const Image = require("../models/Image");
 
@@ -43,47 +40,21 @@ class ImagesController {
   }
 
   create(req, res) {
-    let newImage = new Image();
-
-    let busboy = new Busboy({ headers: req.headers });
-
-    busboy.on('field', (fieldname, value) => {
-      newImage[fieldname] = value;
+    new Image({
+      ...req.body
+    }).save((err, image) => {
+      if (image) {
+        res.status(201).send({
+          status: 201,
+          data: image
+        });
+      } else if (err) {
+        res.status(422).send({
+          status: 422, errors: err.errors
+        });
+      } else
+        res.sendStatus(400);
     });
-    busboy.on('file', (fieldname, file, filename) => {
-      let ext = path.extname(filename);
-      let basename = path.basename(filename, ext);
-
-      let filepath = path.join(
-        "files",
-        req.song['slug'],
-        `${basename}-${Date.now()}${ext}`
-      );
-
-      newImage['url'] = filepath;
-      newImage['filePath'] = path.resolve(filepath);
-      file.on('data', (data) => {
-        newImage['fileSize'] = data.length;
-      });
-
-      file.pipe(fs.createWriteStream(newTrack['filePath']));
-    });
-    busboy.on('finish', () => {
-      newImage.save((err, image) => {
-        if (track) {
-          res.status(201).set('Connection', 'close').send({
-            status: 201,
-            data: image
-          });
-        } else if (err) {
-          res.status(422).send({
-            status: 422, errors: err.errors
-          });
-        } else
-          res.sendStatus(400);
-      });
-    });
-    req.pipe(busboy);
   }
 
   destroy(req, res) {

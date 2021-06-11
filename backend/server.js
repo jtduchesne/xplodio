@@ -17,6 +17,7 @@ const {
   SongsController,
   TracksController,
   ImagesController,
+  UploadsController,
 } = require("./controllers");
 
 app.use(new UsersController);
@@ -24,11 +25,11 @@ app.use(new ArtistsController({with: SongsController}));
 app.use(new SongsController({with: TracksController}));
 app.use(new TracksController);
 app.use(new ImagesController);
+app.use(new UploadsController);
 
 // app.route('/').get((req, res) => {
 //   res.writeHead(200, {'Content-Type': 'text/html'});
-//   res.write('<form action="tracks" method="post" enctype="multipart/form-data">');
-//   res.write('<input type="text" name="name"><br>');
+//   res.write('<form action="uploads" method="post" enctype="multipart/form-data">');
 //   res.write('<input type="file" name="fileToUpload"><br>');
 //   res.write('<input type="submit">');
 //   res.write('</form>');

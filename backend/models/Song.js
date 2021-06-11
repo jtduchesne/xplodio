@@ -35,15 +35,24 @@ const songSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-songSchema.pre('remove', function(next) {
-  try {
-    if (this.artwork)
-      this.artwork.remove();
-    this.tracks.forEach((track) => track.remove());
-    next();
-  } catch(err) {
-    next(err);
-  }
+songSchema.pre('find', function() {
+  this
+    .populate('artwork', 'url -_id')
+    .populate('artist', 'name -_id')
+    .populate('tracks', 'name file -_id');
+});
+songSchema.pre('findOne', function() {
+  this
+    .populate('artwork', 'url -_id')
+    .populate('artist', 'name -_id')
+    .populate('tracks', 'name file -_id');
+});
+songSchema.post('save', function(song, next) {
+  song
+    .populate('artwork', 'url -_id')
+    .populate('artist', 'name -_id')
+    .populate('tracks', 'name file -_id')
+    .execPopulate().then(() => next());
 });
 
 module.exports = mongoose.model('Song', songSchema);

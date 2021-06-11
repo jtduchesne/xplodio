@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
 
 const trackSchema = new mongoose.Schema(
   {
@@ -7,35 +6,30 @@ const trackSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    url: {
-      type: String,
-      required: true,
-    },
-    contentType: {
-      type: String,
-      required: true,
-    },
-    filePath: {
-      type: String,
-      required: true,
-    },
-    fileSize: {
-      type: Number,
+    file: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Upload',
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON:   { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+trackSchema.virtual('url').get(function() {
+  return this.file.url;
+});
 
-function hideFilePath(doc, ret, options) {
-  delete ret.filePath;
-  return ret;
-}
-trackSchema.set('toJSON', {transform: hideFilePath});
-trackSchema.set('toObject', {transform: hideFilePath});
-
-trackSchema.pre('remove', function(next) {
-  fs.unlink(this.filePath, next);
+trackSchema.pre('find', function() {
+  this.populate('file', 'url contentType -_id');
+});
+trackSchema.pre('findOne', function() {
+  this.populate('file', 'url contentType -_id');
+});
+trackSchema.post('save', function(track, next) {
+  track.populate('file', 'url contentType -_id').execPopulate().then(() => next());
 });
 
 module.exports = mongoose.model('Track', trackSchema);
