@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function formatTime(s) {
-  return (s - (s %= 60))/60 + (9<s ? ":" : ":0") + s;
-}
+import { formatTime } from "../../utils";
 
 const Progress = ({ length }) => {
   return (
