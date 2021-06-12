@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <Wrapper>
       <Container className="container">
-        <img src="favicon-32x32.png" alt="Speaker" />
+        <img src="/favicon-32x32.png" alt="Speaker" />
         <span className="brand">Xplodio</span>
         <Link href="#" color="orange">Create account</Link>
         <Link href="#" color="foam">Login</Link>
