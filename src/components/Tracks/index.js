@@ -3,12 +3,17 @@ import styled from "styled-components";
 
 import Track from "./Track";
 
-const Tracks = () => {
+const Tracks = ({ tracks = [] }) => {
   return (
     <Wrapper>
-      <Track name="Vocal" />
-      <Track name="Guitar" />
-      <Track name="Percussions" />
+      {
+        tracks.length > 0 ?
+        tracks.map((track) => (
+          <Track key={track._id} name={track.name} file={track.url} />
+        ))
+        :
+        <Track empty />
+      }
     </Wrapper>
   );
 };

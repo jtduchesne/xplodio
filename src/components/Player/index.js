@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import PlayButton from "./PlayButton";
 import Infos from "./Infos";
 import Progress from "./Progress";
 
-const Player = ({ artworkPath }) => {
+const Player = ({ song }) => {
+  const artworkPath = useMemo(() => {
+    if (song.artwork)
+      return song.artwork.url;
+    else
+      return "/images/broken.png";
+  }, [song]);
+
   return (
     <Wrapper className="row">
       <Background src={artworkPath} />
@@ -13,9 +20,12 @@ const Player = ({ artworkPath }) => {
       <div className="column">
         <div className="row">
           <PlayButton />
-          <Infos song="Song name" artist="Artist" />
+          <Infos
+            song={song.name}
+            artist={song.artist && song.artist.name}
+          />
         </div>
-        <Progress length={300} />
+        <Progress length={song.length} />
       </div>
     </Wrapper>
   );
@@ -28,6 +38,7 @@ const Wrapper = styled.section`
   padding: 16px;
   color: white;
   text-shadow: 0 0 3px rgba(0,0,0, 0.9);
+  border-bottom: 1px solid #CCC;
 `;
 
 const Background = styled.div`

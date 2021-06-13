@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Track = ({ name }) => {
+const Track = ({ name, file, empty }) => {
   return (
     <>
       <Infos className="column">
@@ -11,7 +11,9 @@ const Track = ({ name }) => {
           <button>S</button>
         </span>
       </Infos>
-      <Waveform />
+      <Waveform>
+        {empty ? "(Empty track)" : file}
+      </Waveform>
     </>
   );
 };
@@ -39,8 +41,12 @@ const Infos = styled.div`
 `;
 
 const Waveform = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
   background-color: #EEE;
-  border-bottom: 1px solid #AAA;
+  border-bottom: 1px solid #CCC;
 `;
 
 export default Track;
