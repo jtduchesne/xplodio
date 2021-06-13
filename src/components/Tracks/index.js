@@ -24,6 +24,7 @@ const Wrapper = styled.div`
   grid-template-columns: fit-content(20%) 1fr;
   grid-auto-rows: 50px;
   overflow-y: scroll;
+  border-top: 1px solid #CCC;
 `;
 
 export default Tracks;

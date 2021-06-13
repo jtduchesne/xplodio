@@ -1,16 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-const Infos = ({ song, artist }) => {
+import PlayButton from "./PlayButton";
+import Progress from "./Progress";
+
+const Infos = ({ song }) => {
   return (
-    <Wrapper>
-      <span className="song">{song}</span>
-      <span className="artist">by <strong>{artist}</strong></span>
+    <Wrapper className="column">
+      <div className="row">
+        <PlayButton />
+        <SongInfos>
+          <span className="song">{song.name}</span>
+          <span className="artist">
+            by <strong>{song.artist && song.artist.name}</strong>
+          </span>
+        </SongInfos>
+      </div>
+      <Progress length={song.length} />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  min-width: calc(50% - 150px - 2em);
+  color: white;
+  text-shadow: 0 0 3px rgba(0,0,0, 0.9);
+`;
+
+const SongInfos = styled.div`
   span {
     display: block;
   }
