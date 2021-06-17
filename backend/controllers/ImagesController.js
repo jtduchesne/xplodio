@@ -1,6 +1,7 @@
 const { Router } = require("express");
 
 const Image = require("../models/Image");
+const Upload = require("../models/Upload");
 
 class ImagesController {
   constructor(opts) {
@@ -58,6 +59,10 @@ class ImagesController {
   }
 
   destroy(req, res) {
+    Upload.findById(req.image.upload._id).exec((err, upload) => {
+      if (err) console.log(err);
+      upload.remove((err) => { if (err) console.log(err); });
+    });
     req.image.remove((err, image) => {
       if (image) {
         res.status(204).end();

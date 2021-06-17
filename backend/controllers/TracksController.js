@@ -88,6 +88,10 @@ class TracksController {
   }
 
   destroy(req, res) {
+    Upload.findById(req.track.file._id).exec((err, file) => {
+      if (err) console.log(err);
+      file.remove((err) => { if (err) console.log(err); });
+    });
     req.track.remove((err, track) => {
       if (track) {
         res.status(204).end();

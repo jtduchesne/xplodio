@@ -13,20 +13,24 @@ const imageSchema = new mongoose.Schema(
       required: false,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON:   { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 imageSchema.virtual('url').get(function() {
   return this.upload ? this.upload.url : this.externalUrl;
 });
 
 imageSchema.pre('find', function() {
-  this.populate('upload', 'url -_id');
+  this.populate('upload', 'url');
 });
 imageSchema.pre('findOne', function() {
-  this.populate('upload', 'url -_id');
+  this.populate('upload', 'url');
 });
 imageSchema.post('save', function(image, next) {
-  image.populate('upload', 'url -_id').execPopulate().then(() => next());
+  image.populate('upload', 'url').execPopulate().then(() => next());
 });
 
 module.exports = mongoose.model('Image', imageSchema);

@@ -52,7 +52,7 @@ class UploadsController {
 
       let filepath = path.join(
         "files",
-        `${basename}-${Date.now()}${ext}`
+        `${basename.replace(/[^A-Za-z0-9_-]/, "")}-${Date.now()}${ext}`
       );
 
       newUpload['url'] = filepath;
