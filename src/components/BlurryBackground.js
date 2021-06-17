@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
+  z-index: -1;
 `;
 
 const Background = styled.div`
@@ -25,7 +26,6 @@ const Background = styled.div`
   background-size: cover;
   background-position: center center;
   filter: blur(16px) saturate(50%);
-  z-index: -1;
 `;
 
 export default BlurryBackground;
