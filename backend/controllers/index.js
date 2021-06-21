@@ -5,4 +5,5 @@ module.exports = {
   TracksController: require("./TracksController"),
   ImagesController: require("./ImagesController"),
   UploadsController: require("./UploadsController"),
+  CheckController: require("./CheckController"),
 };

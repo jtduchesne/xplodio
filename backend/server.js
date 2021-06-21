@@ -18,6 +18,7 @@ const {
   TracksController,
   ImagesController,
   UploadsController,
+  CheckController,
 } = require("./controllers");
 
 app.use(new UsersController);
@@ -26,6 +27,7 @@ app.use(new SongsController({with: TracksController}));
 app.use(new TracksController);
 app.use(new ImagesController);
 app.use(new UploadsController);
+app.use(new CheckController);
 
 // app.route('/').get((req, res) => {
 //   res.writeHead(200, {'Content-Type': 'text/html'});

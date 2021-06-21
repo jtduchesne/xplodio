@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
 
+import "semantic-ui-css/semantic.min.css";
+
 const GlobalStyle = createGlobalStyle`
   :root {
     --orange: #E87A00;
@@ -16,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
     --black: #111111;
 
     --max-width: 100%;
+    --max-form-width: 650px;
     --header-height: 40px;
   }
 
@@ -66,6 +69,12 @@ const GlobalStyle = createGlobalStyle`
   .column {
     display: flex;
     flex-flow: column nowrap;
+  }
+
+  label {
+    display: inline-block;
+    margin-right: .5em;
+    &::after { content: " :"; }
   }
 `;
 

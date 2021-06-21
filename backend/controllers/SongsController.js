@@ -47,7 +47,8 @@ class SongsController {
 
   create(req, res) {
     new Song({
-      artist: req.artist._id,
+      length: 0,
+      artist: req.artist && req.artist._id,
       ...req.body,
     }).save(req.body, (err, song) => {
       if (song) {

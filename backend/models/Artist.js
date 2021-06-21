@@ -9,7 +9,7 @@ const artistSchema = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
-      match: /^[a-z][a-z-]{2,}$/,
+      match: /^[A-Za-z0-9][A-Za-z0-9-]{2,}$/,
       index: true,
       unique: true,
     },

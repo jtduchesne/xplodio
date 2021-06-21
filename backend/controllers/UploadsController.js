@@ -52,10 +52,10 @@ class UploadsController {
 
       let filepath = path.join(
         "files",
-        `${basename.replace(/[^A-Za-z0-9_-]/, "")}-${Date.now()}${ext}`
+        `${basename.replace(/[^A-Za-z0-9_-]/g, "")}-${Date.now()}${ext}`
       );
 
-      newUpload['url'] = filepath;
+      newUpload['url'] = "/"+filepath;
       newUpload['contentType'] = mimetype;
       newUpload['filePath'] = path.resolve(filepath);
       file.on('data', (data) => {

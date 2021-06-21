@@ -32,7 +32,7 @@ const App = () => {
 };
 
 const Main = styled.main`
-  height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height));
   box-shadow: 0 0 50px var(--taupe);
 `;
 

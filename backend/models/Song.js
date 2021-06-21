@@ -9,7 +9,7 @@ const songSchema = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
-      match: /^[a-z][a-z-]{2,}$/,
+      match: /^[A-Za-z0-9][A-Za-z0-9-]{2,}$/,
       index: true,
       unique: true,
     },
@@ -38,19 +38,19 @@ const songSchema = new mongoose.Schema(
 songSchema.pre('find', function() {
   this
     .populate('artwork', 'url -_id')
-    .populate('artist', 'name -_id')
+    .populate('artist', 'name slug -_id')
     .populate('tracks', 'name file -_id');
 });
 songSchema.pre('findOne', function() {
   this
     .populate('artwork', 'url -_id')
-    .populate('artist', 'name -_id')
+    .populate('artist', 'name slug -_id')
     .populate('tracks', 'name file -_id');
 });
 songSchema.post('save', function(song, next) {
   song
     .populate('artwork', 'url -_id')
-    .populate('artist', 'name -_id')
+    .populate('artist', 'name slug -_id')
     .populate('tracks', 'name file -_id')
     .execPopulate().then(() => next());
 });

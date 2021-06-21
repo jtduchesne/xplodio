@@ -19,7 +19,7 @@ const trackSchema = new mongoose.Schema(
   }
 );
 trackSchema.virtual('url').get(function() {
-  return this.file.url;
+  return this.file ? this.file.url : "";
 });
 
 trackSchema.pre('find', function() {

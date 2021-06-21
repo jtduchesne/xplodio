@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import BlurryBackground from "../BlurryBackground";
-import Artwork from "./Artwork";
+import Artwork from "../Artwork";
 import Infos from "./Infos";
 
 const Player = ({ song }) => {

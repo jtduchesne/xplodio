@@ -27,6 +27,8 @@ const Song = () => {
 };
 
 const Wrapper = styled.div`
+  min-height: unset;
+  height: calc(100vh - var(--header-height));
 `;
 
 export default Song;

@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const Header = () => {
@@ -7,8 +8,8 @@ const Header = () => {
       <Container className="container">
         <img src="/favicon-32x32.png" alt="Speaker" />
         <span className="brand">Xplodio</span>
-        <Link href="#" color="orange">Create account</Link>
-        <Link href="#" color="foam">Login</Link>
+        <Link exact to="/login" color="orange">Login</Link>
+        <Link exact to="/upload" color="foam">Upload</Link>
       </Container>
     </Wrapper>
   );
@@ -33,7 +34,7 @@ const Container = styled.div`
   }
 `;
 
-const Link = styled.a`
+const Link = styled(NavLink)`
   color: var(--${p => p.color});
   text-decoration: none;
   border: 1px solid var(--${p => p.color});
@@ -42,7 +43,7 @@ const Link = styled.a`
   margin-left: .25em;
   transition: all .3s;
 
-  &:hover, &:focus {
+  &.active, &:hover, &:focus {
     color: white;
     text-shadow: 0 0 5px rgba(0,0,0, 0.7);
     background-color: var(--${p => p.color});
