@@ -7,6 +7,8 @@ import {
 import styled from "styled-components";
 
 import Header from "./Header";
+import NotFound from "./NotFound";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Upload from "./pages/Upload";
@@ -25,6 +27,7 @@ const App = () => {
 
           <Route exact path="/:artist" component={Artist} />
           <Route exact path="/:artist/:song" component={Song} />
+          <Route component={NotFound} />
         </Switch>
       </Main>
     </Router>
