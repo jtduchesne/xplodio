@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import ReactLoading from "react-loading";
 
-import ReactLoading from 'react-loading';
-import { FaTimesCircle } from "react-icons/fa";
+import CloseButton from "./CloseButton";
 
 const Artwork = ({ loading, src, onClose }) => {
   if (loading || !src)
     return <EmptyArtwork>{loading ? <ReactLoading type="spin" color="#AAA" /> : "No image"}</EmptyArtwork>;
   else if (onClose)
-    return <LoadedArtwork src={src}><Close onClick={onClose} /></LoadedArtwork>;
+    return <LoadedArtwork src={src}><CloseButton onClick={onClose} /></LoadedArtwork>;
   else
     return <LoadedArtwork src={src} />;
 };
@@ -38,21 +38,6 @@ const LoadedArtwork = styled.div`
   background-position: center center;
   margin: 1rem;
   position: relative;
-`;
-
-const Close = styled(FaTimesCircle)`
-  border-radius: 50%;
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  font-size: 2em;
-  transition: all .5s;
-
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0px 2px 4px rgba(0,0,0, 0.5);
-    transform: scale(1.1);
-  }
 `;
 
 export default Artwork;
