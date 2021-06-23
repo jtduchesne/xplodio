@@ -5,7 +5,7 @@ import BlurryBackground from "../BlurryBackground";
 import Artwork from "../Artwork";
 import Infos from "./Infos";
 
-const Player = ({ song }) => {
+const Player = ({ loading, song }) => {
   const artworkPath = useMemo(() => {
     if (song.artwork)
       return song.artwork.url;
@@ -15,8 +15,8 @@ const Player = ({ song }) => {
 
   return (
     <Wrapper className="row">
-      <BlurryBackground src={artworkPath} />
-      <Artwork src={artworkPath} />
+      <BlurryBackground loading={loading} src={artworkPath} />
+      <Artwork loading={loading} src={artworkPath} />
       <Infos song={song} />
     </Wrapper>
   );

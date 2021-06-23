@@ -28,7 +28,9 @@ const ImageUpload = () => {
 
   return (
     <Wrapper className="row">
-      <BlurryBackground src={artwork.url} />
+      <BlurryBackground
+        loading={status.processing}
+        src={artwork.url} />
       <Artwork
         loading={status.processing}
         src={artwork.url}

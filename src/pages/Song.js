@@ -1,27 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
+import NotFound from "../NotFound";
 import Player from "../components/Player";
 import Tracks from "../components/Tracks";
 
 const Song = () => {
   const { artist: artistSlug, song: songSlug } = useParams();
+
+  const [status, setStatus] = useState({loading: true});
   const [song, setSong] = useState({});
 
+  const songUrl = useMemo(() => (
+    `/artist/${artistSlug}/song/${songSlug}`
+  ), [artistSlug, songSlug]);
+
   useEffect(() => {
-    fetch(`/artist/${artistSlug}/song/${songSlug}`)
+    fetch(songUrl)
       .then((response) => response.json())
       .then(({status, data}) => {
-        if (status === 200)
+        if (status === 200) {
           setSong(data);
-      });
-  }, [artistSlug, songSlug]);
+          setStatus((status) => ({...status, loaded: true}));
+        } else
+          setStatus((status) => ({...status, notfound: true}));
+      })
+      .catch(console.log)
+      .finally(() => setStatus((status) => ({...status, loading: false})));
+  }, [songUrl]);
 
   return (
     <Wrapper className="column">
-      <Player song={song} />
-      <Tracks tracks={song.tracks} />
+      { status.notfound ?
+        <NotFound />
+        :
+        <>
+          <Player loading={status.loading} song={song} />
+          {
+            status.loaded &&
+            <Tracks tracks={song.tracks} />
+          }
+        </>
+      }
     </Wrapper>
   );
 };
