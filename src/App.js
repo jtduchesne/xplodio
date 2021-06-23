@@ -15,6 +15,8 @@ import Upload from "./pages/Upload";
 import Artist from "./pages/Artist";
 import Song from "./pages/Song";
 
+import { UploadProvider } from "./contexts/UploadContext";
+
 const App = () => {
   return (
     <Router>
@@ -23,7 +25,11 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/upload" component={Upload} />
+          <Route exact path="/upload">
+            <UploadProvider>
+              <Upload />
+            </UploadProvider>
+          </Route>
 
           <Route exact path="/:artist" component={Artist} />
           <Route exact path="/:artist/:song" component={Song} />

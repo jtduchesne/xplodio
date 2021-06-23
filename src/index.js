@@ -5,14 +5,10 @@ import GlobalStyle from "./GlobalStyle";
 
 import App from "./App";
 
-import { UploadProvider } from "./contexts/UploadContext";
-
 ReactDOM.render(
   <React.StrictMode>
-    <UploadProvider>
-      <GlobalStyle />
-      <App />
-    </UploadProvider>
+    <GlobalStyle />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
