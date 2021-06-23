@@ -11,9 +11,11 @@ const Infos = ({ song }) => {
         <PlayButton />
         <SongInfos>
           <span className="song">{song.name}</span>
-          <span className="artist">
-            by <strong>{song.artist && song.artist.name}</strong>
-          </span>
+          { !!song.artist &&
+            <span className="artist">
+              by <strong><a href={`/${song.artist.slug}`}>{song.artist.name}</a></strong>
+            </span>
+          }
         </SongInfos>
       </div>
       <Progress length={song.length} />
@@ -30,6 +32,10 @@ const Wrapper = styled.div`
 const SongInfos = styled.div`
   span {
     display: block;
+  }
+  a {
+    color: inherit;
+    &:hover { text-decoration: underline; }
   }
   .song {
     font-size: 1.5em;

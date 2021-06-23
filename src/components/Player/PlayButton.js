@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   &::before {
     content: "";
     position: absolute;
-    background-color: white;
+    background-color: rgba(255,255,255, .9);
     top: 0.2em;
     left: 0.2em;
     height: 2.6em;
