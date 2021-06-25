@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { Progress } from "semantic-ui-react";
 
+import WaveSurfer from "wavesurfer.js";
+import ReactLoading from "react-loading";
+
+import SongContext from "../../contexts/SongContext";
+
+import { toParam } from "../../utils";
+
 const Track = ({ name, file, progress }) => {
+  const {
+    actions: { adjustLength },
+  } = useContext(SongContext);
+
+  const [status, setStatus] = useState({loading: true});
+  const id = useMemo(() => toParam(file), [file]);
+
+  const waveform = useRef(null);
+
+  useEffect(() => {
+    if (file && id && !waveform.current) {
+      waveform.current = WaveSurfer.create({
+        container: `#${id}`,
+        height: 50,
+        progressColor: "#2D5BFF",
+      });
+      waveform.current.load(file);
+
+      waveform.current.on('ready', function() {
+        setStatus({ready: true});
+        adjustLength(waveform.current.getDuration());
+      });
+    }
+  }, [id, file, adjustLength]);
+
   return (
     <>
       <Infos className="column">
@@ -13,7 +45,10 @@ const Track = ({ name, file, progress }) => {
         </span>
       </Infos>
       <Waveform>
-        { file ||
+        { status.loading && <Loading type="bars" color="#777" heigth={32} width={32} /> }
+        { file && id ?
+          <div style={{width: "100%"}} id={id}></div>
+          :
           <ProgressBar
             percent={progress.percentage}
             autoSuccess error={progress.error}
@@ -64,6 +99,13 @@ const Waveform = styled.div`
   color: #888;
   background-color: #EEE;
   border-bottom: 1px solid #CCC;
+`;
+
+const Loading = styled(ReactLoading)`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ProgressBar = styled(Progress)`

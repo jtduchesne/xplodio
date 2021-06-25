@@ -11123,6 +11123,11 @@ watchpack@^1.7.4:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
 
+wavesurfer.js@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-5.1.0.tgz#7155e76da76ab293b45c80e5c7feeba0a7a282cd"
+  integrity sha512-6qEhIopHwDpZl9otqopIH94gcu1xxbO4JZfjd0kH/s5c4p52BSx3p5/dBH4aappzvxbI+90fxKZKsoqaOUSn8Q==
+
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/wbuf/-/wbuf-1.7.3.tgz#c1d8d149316d3ea852848895cb6a0bfe887b87df"
