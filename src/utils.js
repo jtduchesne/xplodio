@@ -4,6 +4,10 @@ export const toParam = (name) => (
     .replace(/[\s_]+/g, "-")
 );
 
+export const prettifyTrackName = (name) => (
+  name.replace(/\.\w{2,4}$/, "").replace(/_|(?<=[a-z])(?=[A-Z])/g, " ")
+);
+
 export const formatTime = (s) => (
   (s - (s %= 60))/60 + (9<s ? ":" : ":0") + s
 );

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import NotFound from "../NotFound";
@@ -28,13 +28,31 @@ export const SongProvider = ({ children }) => {
       .finally(() => setStatus((status) => ({...status, loading: false})));
   }, [apiUrl]);
 
+  const linkTracks = useCallback((trackIds) => {
+    fetch(apiUrl, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tracks: trackIds.filter(id => id) }),
+    }).then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200)
+          setSong(res.data);
+        else
+          console.log(res);
+      })
+      .catch(console.log);
+  }, [apiUrl]);
+
   const value = useMemo(() => ({
     state: {
       status,
       song,
       url,
     },
-  }), [status, song, url]);
+    actions: {
+      linkTracks,
+    }
+  }), [status, song, url, linkTracks]);
 
   return (
     <SongContext.Provider value={value}>

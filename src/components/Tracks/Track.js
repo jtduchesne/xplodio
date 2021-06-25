@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { Progress } from "semantic-ui-react";
 
-const Track = ({ name, file, empty }) => {
+const Track = ({ name, file, progress }) => {
   return (
     <>
       <Infos className="column">
@@ -12,7 +13,21 @@ const Track = ({ name, file, empty }) => {
         </span>
       </Infos>
       <Waveform>
-        {empty ? "(Empty track)" : file}
+        { file ||
+          <ProgressBar
+            percent={progress.percentage}
+            autoSuccess error={progress.error}
+            size='small' color='olive' progress active
+          >
+            { progress.error ? "Problem uploading" :
+              progress.percentage === 100 ? "Successfully uploaded" :
+              progress.percentage ? "Uploading file" :
+              "Waiting for"
+            }
+            &nbsp;
+            <em>{progress.filename}</em>
+          </ProgressBar>
+        }
       </Waveform>
     </>
   );
@@ -37,6 +52,8 @@ const Infos = styled.div`
   button {
     font-size: .6em;
     padding: 2px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
@@ -47,6 +64,10 @@ const Waveform = styled.div`
   color: #888;
   background-color: #EEE;
   border-bottom: 1px solid #CCC;
+`;
+
+const ProgressBar = styled(Progress)`
+  width: 98%;
 `;
 
 export default Track;
