@@ -7,7 +7,7 @@ const Header = () => {
     <Wrapper>
       <Container className="container">
         <img src="/favicon-32x32.png" alt="Speaker" />
-        <span className="brand">Xplodio</span>
+        <span className="brand">Xplodio<sub>beta</sub></span>
         <Link exact to="/login" color="orange">Login</Link>
         <Link exact to="/upload" color="foam">Upload</Link>
       </Container>
@@ -31,6 +31,11 @@ const Container = styled.div`
     font-weight: bold;
     margin-left: .25em;
     margin-right: auto;
+
+    sub {
+      font-size: .5em;
+      margin-left: .3em;
+    }
   }
 `;
 
