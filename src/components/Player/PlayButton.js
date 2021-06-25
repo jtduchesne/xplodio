@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { CgPlayButtonO } from "react-icons/cg";
+import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg";
+
+import SongContext from "../../contexts/SongContext";
 
 const PlayButton = () => {
+  const {
+    state: { status },
+    actions: { playPause },
+  } = useContext(SongContext);
+
   return (
-    <Wrapper>
-      <PlayButtonSvg size="3em" />
+    <Wrapper onClick={() => playPause()}>
+      {
+        status.playing ?
+        <PauseButtonSvg size="3em" />
+        :
+        <PlayButtonSvg size="3em" />
+      }
     </Wrapper>
   );
 };
@@ -30,6 +42,10 @@ const Wrapper = styled.div`
 `;
 
 const PlayButtonSvg = styled(CgPlayButtonO)`
+  position: relative;
+  filter: drop-shadow(0 0 1px rgba(0,0,0, 0.5));
+`;
+const PauseButtonSvg = styled(CgPlayPauseO)`
   position: relative;
   filter: drop-shadow(0 0 1px rgba(0,0,0, 0.5));
 `;

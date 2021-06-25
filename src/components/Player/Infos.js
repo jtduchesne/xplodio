@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PlayButton from "./PlayButton";
 import Progress from "./Progress";
 
-const Infos = ({ song, length }) => {
+const Infos = ({ song, position, length }) => {
   return (
     <Wrapper className="column">
       <div className="row">
@@ -18,7 +18,7 @@ const Infos = ({ song, length }) => {
           }
         </SongInfos>
       </div>
-      <Progress length={song.length || length} />
+      <Progress position={position} length={song.length || length} />
     </Wrapper>
   );
 };

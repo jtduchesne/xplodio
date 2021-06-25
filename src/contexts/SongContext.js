@@ -11,6 +11,9 @@ export const SongProvider = ({ children }) => {
   const [status, setStatus] = useState({loading: true});
   const [song, setSong] = useState({});
   const [length, setLength] = useState(0);
+  const [position, setPosition] = useState(0);
+
+  const [trackRefs, setTrackRefs] = useState([]);
 
   const url    = useMemo(() => `/${artistSlug}/${slug}`,             [artistSlug, slug]);
   const apiUrl = useMemo(() => `/artist/${artistSlug}/song/${slug}`, [artistSlug, slug]);
@@ -49,18 +52,42 @@ export const SongProvider = ({ children }) => {
       .catch(console.log);
   }, [apiUrl]);
 
+  const bindTrackRef = useCallback((newTrackRef) => {
+    setTrackRefs((trackRefs) => ([...trackRefs, newTrackRef]));
+  }, []);
+
+  const playPause = useCallback(() => {
+    setStatus((status) => ({...status, playing: !status.playing}));
+    trackRefs.forEach((track) => track.current.playPause());
+  }, [trackRefs]);
+
+  useEffect(() => {
+    if (status.playing) {
+      let interval = setInterval(() => {
+        setPosition(Math.round(trackRefs[0].current.getCurrentTime()));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [status.playing, trackRefs]);
+
   const value = useMemo(() => ({
     state: {
       status,
       song,
       length,
+      position,
       url,
     },
     actions: {
       linkTracks,
+      bindTrackRef,
       adjustLength,
+      playPause,
     }
-  }), [status, song, length, url, linkTracks, adjustLength]);
+  }), [
+    status, song, length, position, url,
+    linkTracks, bindTrackRef, adjustLength, playPause,
+  ]);
 
   return (
     <SongContext.Provider value={value}>

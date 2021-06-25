@@ -11,7 +11,7 @@ import { toParam } from "../../utils";
 
 const Track = ({ name, file, progress }) => {
   const {
-    actions: { adjustLength },
+    actions: { adjustLength, bindTrackRef },
   } = useContext(SongContext);
 
   const [status, setStatus] = useState({loading: true});
@@ -32,8 +32,9 @@ const Track = ({ name, file, progress }) => {
         setStatus({ready: true});
         adjustLength(waveform.current.getDuration());
       });
+      bindTrackRef(waveform);
     }
-  }, [id, file, adjustLength]);
+  }, [id, file, adjustLength, bindTrackRef]);
 
   return (
     <>

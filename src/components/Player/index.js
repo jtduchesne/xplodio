@@ -9,7 +9,7 @@ import SongContext from "../../contexts/SongContext";
 
 const Player = () => {
   const {
-    state: { status, song, length }
+    state: { status, song, position, length }
   } = useContext(SongContext);
 
   const artworkPath = useMemo(() => {
@@ -23,7 +23,7 @@ const Player = () => {
     <Wrapper className="row">
       <BlurryBackground loading={status.loading} src={artworkPath} />
       <Artwork loading={status.loading} src={artworkPath} />
-      <Infos song={song} length={length} />
+      <Infos song={song} position={position} length={length} />
     </Wrapper>
   );
 };

@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 import { formatTime } from "../../utils";
 
-const Progress = ({ length }) => {
+const Progress = ({ position, length }) => {
   return (
     <Wrapper className="row">
-      <span>0:00</span>
-      <input type="range" min="1" max={length} value="1" />
+      <span>{formatTime(position)}</span>
+      <input type="range" min="1" value={position} max={length} />
       <span>{formatTime(length)}</span>
     </Wrapper>
   );
