@@ -7,7 +7,6 @@ import {
 import styled from "styled-components";
 
 import Header from "./Header";
-import NotFound from "./NotFound";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,6 +15,7 @@ import Artist from "./pages/Artist";
 import Song from "./pages/Song";
 
 import { UploadProvider } from "./contexts/UploadContext";
+import { ArtistProvider } from "./contexts/ArtistContext";
 
 const App = () => {
   return (
@@ -31,9 +31,16 @@ const App = () => {
             </UploadProvider>
           </Route>
 
-          <Route exact path="/:artist" component={Artist} />
-          <Route exact path="/:artist/:song" component={Song} />
-          <Route component={NotFound} />
+          <Route path="/:artist"
+            render={({ match: { path } }) => (
+              <ArtistProvider>
+                <Switch>
+                  <Route exact path={path} component={Artist} />
+                  <Route exact path={path+"/:song"} component={Song} />
+                </Switch>
+              </ArtistProvider>
+            )}
+          />
         </Switch>
       </Main>
     </Router>

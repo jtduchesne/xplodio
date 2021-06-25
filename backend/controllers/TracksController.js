@@ -3,7 +3,7 @@ const Busboy = require("busboy");
 const fs = require('fs');
 const path = require('path');
 
-const Track = require("../models/Track");
+const { Track, Upload } = require("../models");
 
 class TracksController {
   constructor(opts) {
