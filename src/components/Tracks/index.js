@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import Track from "./Track";
 
-const Tracks = ({ tracks = [] }) => {
+import SongContext from "../../contexts/SongContext";
+
+const Tracks = () => {
+  const {
+    state: { song }
+  } = useContext(SongContext);
+
   return (
     <Wrapper>
       {
-        tracks.length > 0 ?
-        tracks.map((track) => (
-          <Track key={track._id} name={track.name} file={track.url} />
+        song.tracks && song.tracks.length > 0 ?
+        song.tracks.map((track, index) => (
+          <Track key={index} name={track.name} file={track.url} />
         ))
         :
         <Track empty />

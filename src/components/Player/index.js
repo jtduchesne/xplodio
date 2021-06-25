@@ -1,11 +1,17 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import styled from "styled-components";
 
 import BlurryBackground from "../BlurryBackground";
 import Artwork from "../Artwork";
 import Infos from "./Infos";
 
-const Player = ({ loading, song }) => {
+import SongContext from "../../contexts/SongContext";
+
+const Player = () => {
+  const {
+    state: { status, song }
+  } = useContext(SongContext);
+
   const artworkPath = useMemo(() => {
     if (song.artwork)
       return song.artwork.url;
@@ -15,8 +21,8 @@ const Player = ({ loading, song }) => {
 
   return (
     <Wrapper className="row">
-      <BlurryBackground loading={loading} src={artworkPath} />
-      <Artwork loading={loading} src={artworkPath} />
+      <BlurryBackground loading={status.loading} src={artworkPath} />
+      <Artwork loading={status.loading} src={artworkPath} />
       <Infos song={song} />
     </Wrapper>
   );

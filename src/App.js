@@ -2,6 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
+  Redirect,
   Route
 } from "react-router-dom";
 import styled from "styled-components";
@@ -16,6 +17,7 @@ import Song from "./pages/Song";
 
 import { UploadProvider } from "./contexts/UploadContext";
 import { ArtistProvider } from "./contexts/ArtistContext";
+import { SongProvider } from "./contexts/SongContext";
 
 const App = () => {
   return (
@@ -36,7 +38,16 @@ const App = () => {
               <ArtistProvider>
                 <Switch>
                   <Route exact path={path} component={Artist} />
-                  <Route exact path={path+"/:song"} component={Song} />
+                  <Route path={path+"/:song"}
+                    render={({ match: { path } }) => (
+                      <SongProvider>
+                        <Switch>
+                          <Route exact path={`${path}`} component={Song} />
+                          <Redirect exact from={`${path}/*`} to={path} />
+                        </Switch>
+                      </SongProvider>
+                    )}
+                  />
                 </Switch>
               </ArtistProvider>
             )}
