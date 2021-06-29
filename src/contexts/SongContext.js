@@ -12,6 +12,7 @@ export const SongProvider = ({ children }) => {
   const [song, setSong] = useState({});
   const [length, setLength] = useState(0);
   const [position, setPosition] = useState(0);
+  const [soloMode, setSoloMode] = useState(false);
 
   const [trackRefs, setTrackRefs] = useState([]);
 
@@ -76,6 +77,7 @@ export const SongProvider = ({ children }) => {
       song,
       length,
       position,
+      soloMode,
       url,
     },
     actions: {
@@ -83,9 +85,10 @@ export const SongProvider = ({ children }) => {
       bindTrackRef,
       adjustLength,
       playPause,
+      setSoloMode,
     }
   }), [
-    status, song, length, position, url,
+    status, song, length, position, soloMode, url,
     linkTracks, bindTrackRef, adjustLength, playPause,
   ]);
 

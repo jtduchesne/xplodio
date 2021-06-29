@@ -1,7 +1,9 @@
 export const toParam = (name) => (
-  name.toLowerCase()
+  name
+  ? name.toLowerCase()
     .replace(/^[\s_-]+|[\s_-]+$|[^a-z0-9\s_-]+/g, "")
     .replace(/[\s_]+/g, "-")
+  : ""
 );
 
 export const prettifyTrackName = (name) => (

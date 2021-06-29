@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { Progress } from "semantic-ui-react";
 
@@ -11,10 +11,14 @@ import { toParam } from "../../utils";
 
 const Track = ({ name, file, progress }) => {
   const {
-    actions: { adjustLength, bindTrackRef },
+    state: { soloMode },
+    actions: { adjustLength, bindTrackRef, setSoloMode },
   } = useContext(SongContext);
 
   const [status, setStatus] = useState({loading: true});
+  const [muted, setMuted] = useState(false);
+  const [mute, setMute] = useState(false);
+  const [solo, setSolo] = useState(false);
   const id = useMemo(() => toParam(file), [file]);
 
   const waveform = useRef(null);
@@ -36,16 +40,32 @@ const Track = ({ name, file, progress }) => {
     }
   }, [id, file, adjustLength, bindTrackRef]);
 
+  const toggleMute = useCallback(() => {
+    setMute(currentState => !currentState);
+  }, []);
+  const toggleSolo = useCallback(() => {
+    setSolo(currentState => {
+      setSoloMode(!currentState);
+      return !currentState;
+    });
+  }, [setSoloMode]);
+
+  useEffect(() => {
+    let muted = mute || (soloMode && !solo);
+    setMuted(muted);
+    waveform.current.setMute(muted);
+  }, [mute, soloMode, solo]);
+
   return (
     <>
       <Infos className="column">
         <span>{name}</span>
         <span>
-          <button>M</button>
-          <button>S</button>
+          <MuteButton className={mute && "active"} onClick={toggleMute}>M</MuteButton>
+          <SoloButton className={solo && "active"} onClick={toggleSolo}>S</SoloButton>
         </span>
       </Infos>
-      <Waveform>
+      <Waveform className={muted && "muted"}>
         { status.loading && <Loading type="bars" color="#777" heigth={32} width={32} /> }
         { file && id ?
           <div style={{width: "100%"}} id={id}></div>
@@ -84,12 +104,25 @@ const Infos = styled.div`
     scrollbar-width: none;
   }
   span::-webkit-scrollbar { width: 0 !important; }
-  
-  button {
-    font-size: .6em;
-    padding: 2px;
-    width: 18px;
-    height: 18px;
+`;
+
+const Button = styled.button`
+  font-size: .6em;
+  padding: 2px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #888;
+  border-radius: 3px;
+  background-color: #DDD;
+`;
+const MuteButton = styled(Button)`
+  &.active {
+    background-color: #AA0;
+  }
+`;
+const SoloButton = styled(Button)`
+  &.active {
+    background-color: #A50;
   }
 `;
 
@@ -100,6 +133,8 @@ const Waveform = styled.div`
   color: #888;
   background-color: #EEE;
   border-bottom: 1px solid #CCC;
+
+  &.muted { opacity: .5; }
 `;
 
 const Loading = styled(ReactLoading)`
