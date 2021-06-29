@@ -29,6 +29,7 @@ const Track = ({ name, file, progress }) => {
         container: `#${id}`,
         height: 50,
         progressColor: "#2D5BFF",
+        interact: false,
       });
       waveform.current.load(file);
 
