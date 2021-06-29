@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 
 import { formatTime } from "../../utils";
 
-const Progress = ({ position, length }) => {
+const Progress = ({ position, length, onChange }) => {
+  const handleChange = useCallback((e) => {
+    onChange(e.target.value / length);
+  }, [onChange, length]);
+
   return (
     <Wrapper className="row">
       <span>{formatTime(position)}</span>
-      <input type="range" min="1" value={position} max={length} />
+      <input type="range" min="1" value={position} max={length} onChange={handleChange} />
       <span>{formatTime(length)}</span>
     </Wrapper>
   );

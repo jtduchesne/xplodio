@@ -62,6 +62,11 @@ export const SongProvider = ({ children }) => {
     trackRefs.forEach((track) => track.current.playPause());
   }, [trackRefs]);
 
+  const seek = useCallback((progress) => {
+    trackRefs.forEach((track) => track.current.seekTo(progress));
+    setPosition(Math.round(trackRefs[0].current.getCurrentTime()));
+  }, [trackRefs]);
+
   useEffect(() => {
     if (status.playing) {
       let interval = setInterval(() => {
@@ -85,11 +90,12 @@ export const SongProvider = ({ children }) => {
       bindTrackRef,
       adjustLength,
       playPause,
+      seek,
       setSoloMode,
     }
   }), [
     status, song, length, position, soloMode, url,
-    linkTracks, bindTrackRef, adjustLength, playPause,
+    linkTracks, bindTrackRef, adjustLength, playPause, seek,
   ]);
 
   return (
