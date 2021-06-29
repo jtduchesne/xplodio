@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import PlayButton from "./PlayButton";
@@ -20,7 +21,7 @@ const Infos = () => {
           <span className="song">{song.name}</span>
           { !!song.artist &&
             <span className="artist">
-              by <strong><a href={`/${song.artist.slug}`}>{song.artist.name}</a></strong>
+              by <Link to={`/${song.artist.slug}`}><strong>{song.artist.name}</strong></Link>
             </span>
           }
         </SongInfos>
