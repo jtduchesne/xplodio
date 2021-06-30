@@ -57,9 +57,7 @@ const Tracks = () => {
       });
   }, []);
 
-  const uploadFiles = useCallback((e) => {
-    const files = Array.from(e.target.files);
-
+  const uploadFiles = useCallback((files) => {
     setUploadInfos({ val: [] });
     uploadInfosRef.current = {
       val: files.map((file) => ({
@@ -69,8 +67,7 @@ const Tracks = () => {
       })),
     };
 
-    let promises = files.map(uploadFile);
-    Promise.all(promises)
+    Promise.all(files.map(uploadFile))
       .then(linkTracks)
       .catch(console.log);
   }, [uploadFile, linkTracks]);

@@ -19,6 +19,7 @@ const Track = ({ name, file, progress }) => {
   const [muted, setMuted] = useState(false);
   const [mute, setMute] = useState(false);
   const [solo, setSolo] = useState(false);
+  
   const id = useMemo(() => toParam(file), [file]);
 
   const waveform = useRef(null);
@@ -52,9 +53,11 @@ const Track = ({ name, file, progress }) => {
   }, [setSoloMode]);
 
   useEffect(() => {
-    let muted = mute || (soloMode && !solo);
-    setMuted(muted);
-    waveform.current.setMute(muted);
+    if (waveform.current) {
+      let muted = mute || (soloMode && !solo);
+      setMuted(muted);
+      waveform.current.setMute(muted);
+    }
   }, [mute, soloMode, solo]);
 
   return (
@@ -67,7 +70,7 @@ const Track = ({ name, file, progress }) => {
         </span>
       </Infos>
       <Waveform className={muted && "muted"}>
-        { status.loading && <Loading type="bars" color="#777" heigth={32} width={32} /> }
+        { status.loading && <Loading type="cylon" color="#777" heigth={32} width={32} /> }
         { file && id ?
           <div style={{width: "100%"}} id={id}></div>
           :

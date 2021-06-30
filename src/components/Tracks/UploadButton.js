@@ -1,9 +1,14 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import { Button, Icon } from "semantic-ui-react";
 
 const UploadButton = ({ onChooseFiles }) => {
   const fileInputRef = useRef(null);
+
+  const handleChooseFiles = useCallback((e) => {
+    e.preventDefault();
+    onChooseFiles(Array.from(e.target.files));
+  }, [onChooseFiles]);
 
   return (
     <Wrapper>
@@ -20,7 +25,7 @@ const UploadButton = ({ onChooseFiles }) => {
         accept="audio/*"
         multiple
         hidden
-        onChange={onChooseFiles}
+        onChange={handleChooseFiles}
       />
     </Wrapper>
   );
